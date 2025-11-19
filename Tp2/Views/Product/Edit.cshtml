@@ -1,0 +1,440 @@
+﻿@model Tp2.ViewModels.EditViewModel
+@{
+    ViewData["Title"] = "Modifier le Produit";
+    var photoPath = "~/images/" + (Model.ExistingImagePath ?? "noimage.jpg");
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-warning text-dark py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-edit me-2"></i>Modifier le Produit
+                        </h4>
+                        <a asp-action="Index" class="btn btn-outline-dark btn-sm">
+                            <i class="fas fa-arrow-left me-1"></i>Retour à la liste
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-controller="Product" asp-action="Edit" enctype="multipart/form-data" method="post" id="editForm">
+                        <!-- Champs cachés -->
+                        <input hidden asp-for="ProductId" />
+                        <input hidden asp-for="ExistingImagePath" />
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none" id="validationSummary"></div>
+
+                        <div class="row">
+                            <!-- Colonne Informations -->
+                            <div class="col-md-8">
+                                <!-- Section Informations de Base -->
+                                <div class="mb-4">
+                                    <h5 class="text-warning mb-3 border-bottom pb-2">
+                                        <i class="fas fa-info-circle me-2"></i>Informations du Produit
+                                    </h5>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="Name" class="form-label fw-bold">
+                                                <i class="fas fa-tag me-1"></i>Nom du Produit
+                                            </label>
+                                            <input asp-for="Name" class="form-control form-control-lg"
+                                                   placeholder="Nom du produit"
+                                                   required />
+                                            <div class="form-text">Modifiez le nom du produit</div>
+                                            <span asp-validation-for="Name" class="text-danger small"></span>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="CategoryId" class="form-label fw-bold">
+                                                <i class="fas fa-folder me-1"></i>Catégorie
+                                            </label>
+                                            <select asp-for="CategoryId" class="form-select form-select-lg" required>
+                                                <option value="">Sélectionnez une catégorie</option>
+                                                @if (ViewBag.CategoryId != null)
+                                                {
+                                                    foreach (var item in ViewBag.CategoryId)
+                                                    {
+                                                        <option value="@item.Value">@item.Text</option>
+                                                    }
+                                                }
+                                            </select>
+                                            <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section Prix et Stock -->
+                                <div class="mb-4">
+                                    <h5 class="text-warning mb-3 border-bottom pb-2">
+                                        <i class="fas fa-chart-line me-2"></i>Prix et Stock
+                                    </h5>
+
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label asp-for="Price" class="form-label fw-bold">
+                                                <i class="fas fa-money-bill me-1"></i>Prix (TND)
+                                            </label>
+                                            <div class="input-group input-group-lg">
+                                                <span class="input-group-text bg-light">TND</span>
+                                                <input asp-for="Price" class="form-control"
+                                                       type="number"
+                                                       step="0.01"
+                                                       min="0.01"
+                                                       max="100000"
+                                                       placeholder="0.00"
+                                                       required />
+                                            </div>
+                                            <span asp-validation-for="Price" class="text-danger small"></span>
+                                        </div>
+
+                                        <div class="col-md-4 mb-3">
+                                            <label asp-for="QteStock" class="form-label fw-bold">
+                                                <i class="fas fa-boxes me-1"></i>Quantité en Stock
+                                            </label>
+                                            <input asp-for="QteStock" class="form-control form-control-lg"
+                                                   type="number"
+                                                   min="0"
+                                                   max="100000"
+                                                   placeholder="0"
+                                                   required />
+                                            <span asp-validation-for="QteStock" class="text-danger small"></span>
+                                        </div>
+
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label fw-bold">
+                                                <i class="fas fa-calculator me-1"></i>Valeur du Stock
+                                            </label>
+                                            <div class="form-control form-control-lg bg-light fw-bold" id="stockValue">
+                                                TND 0.00
+                                            </div>
+                                            <div class="form-text">Calcul automatique</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Colonne Image -->
+                            <div class="col-md-4">
+                                <div class="sticky-top" style="top: 20px;">
+                                    <!-- Image Actuelle -->
+                                    <div class="mb-4">
+                                        <h5 class="text-warning mb-3">
+                                            <i class="fas fa-image me-2"></i>Image Actuelle
+                                        </h5>
+                                        <div class="text-center">
+                                            <img id="currentImage" src="@photoPath" asp-append-version="true"
+                                                 class="img-thumbnail shadow"
+                                                 style="max-height: 200px; width: auto;"
+                                                 alt="Image actuelle du produit" />
+                                            <div class="mt-2">
+                                                <small class="text-muted">Image actuelle</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Nouvelle Image -->
+                                    <div class="mb-4">
+                                        <h5 class="text-warning mb-3">
+                                            <i class="fas fa-sync me-2"></i>Changer l'Image
+                                        </h5>
+                                        <div class="file-upload-area border rounded p-3 text-center">
+                                            <div class="mb-2">
+                                                <i class="fas fa-camera fa-2x text-muted"></i>
+                                            </div>
+
+                                            <div class="custom-file">
+                                                <input asp-for="ImagePath" type="file"
+                                                       class="form-control custom-file-input d-none"
+                                                       accept="image/*"
+                                                       id="imageInput" />
+                                                <button type="button" class="btn btn-outline-warning btn-sm w-100"
+                                                        onclick="document.getElementById('imageInput').click()">
+                                                    <i class="fas fa-upload me-1"></i>Changer l'image
+                                                </button>
+                                            </div>
+
+                                            <div class="mt-2">
+                                                <span class="text-muted small">
+                                                    JPG, PNG, GIF • Max 5MB
+                                                </span>
+                                            </div>
+
+                                            <!-- Preview Nouvelle Image -->
+                                            <div id="newImagePreview" class="mt-3 d-none">
+                                                <img id="preview" class="img-thumbnail" style="max-height: 150px;" />
+                                                <div class="mt-2">
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="cancelImageChange()">
+                                                        <i class="fas fa-times me-1"></i>Annuler
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="ImagePath" class="text-danger small d-block mt-2"></span>
+                                    </div>
+
+                                    <!-- Statut du Produit -->
+                                    <div class="mb-3">
+                                        <h5 class="text-warning mb-3">
+                                            <i class="fas fa-info-circle me-2"></i>Statut
+                                        </h5>
+                                        <div class="alert alert-info py-2">
+                                            <small>
+                                                <i class="fas fa-clock me-1"></i>
+                                                <strong>Dernière modification :</strong>
+                                                <span id="lastModified">@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</span>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section Actions -->
+                        <div class="row mt-4 pt-3 border-top">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <button type="button" class="btn btn-outline-secondary" onclick="showResetConfirmation()">
+                                            <i class="fas fa-undo me-1"></i>Réinitialiser
+                                        </button>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <a asp-action="Index" class="btn btn-outline-dark px-4">
+                                            <i class="fas fa-times me-1"></i>Annuler
+                                        </a>
+                                        <button type="submit" class="btn btn-warning px-4" id="submitBtn">
+                                            <i class="fas fa-save me-2"></i>Mettre à jour
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .file-upload-area {
+        border: 2px dashed #dee2e6;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+    }
+
+        .file-upload-area:hover {
+            border-color: #ffc107;
+            background: #fffbf0;
+        }
+
+        .file-upload-area.dragover {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+    .card {
+        border-radius: 15px;
+    }
+
+    .card-header {
+        border-radius: 15px 15px 0 0 !important;
+    }
+
+    .form-control, .form-select {
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+            border-color: #ffc107;
+        }
+
+    .btn {
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .sticky-top {
+        z-index: 1;
+    }
+
+    #stockValue.high-value {
+        background-color: #fff3cd !important;
+        color: #856404 !important;
+    }
+
+    #stockValue.low-value {
+        background-color: #f8d7da !important;
+        color: #721c24 !important;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Calcul automatique de la valeur du stock
+            function calculateStockValue() {
+                const price = parseFloat($('#Price').val()) || 0;
+                const quantity = parseInt($('#QteStock').val()) || 0;
+                const stockValue = price * quantity;
+                $('#stockValue').text('TND ' + stockValue.toFixed(2));
+
+                // Style conditionnel selon la valeur
+                const stockValueElement = $('#stockValue');
+                stockValueElement.removeClass('high-value low-value');
+
+                if (stockValue > 10000) {
+                    stockValueElement.addClass('high-value');
+                } else if (stockValue === 0) {
+                    stockValueElement.addClass('low-value');
+                }
+            }
+
+            $('#Price, #QteStock').on('input', calculateStockValue);
+
+            // Gestion avancée de l'upload d'image
+            const fileUploadArea = $('.file-upload-area');
+            const imageInput = $('#imageInput')[0];
+            const currentImage = $('#currentImage');
+
+            // Drag and drop
+            fileUploadArea.on('dragover', function (e) {
+                e.preventDefault();
+                $(this).addClass('dragover');
+            });
+
+            fileUploadArea.on('dragleave', function () {
+                $(this).removeClass('dragover');
+            });
+
+            fileUploadArea.on('drop', function (e) {
+                e.preventDefault();
+                $(this).removeClass('dragover');
+                if (e.originalEvent.dataTransfer.files.length) {
+                    imageInput.files = e.originalEvent.dataTransfer.files;
+                    handleImageSelection();
+                }
+            });
+
+            // Gestion de la sélection d'image
+            $('#imageInput').on('change', handleImageSelection);
+
+            function handleImageSelection() {
+                const file = imageInput.files[0];
+                if (file) {
+                    // Validation du fichier
+                    const maxSize = 5 * 1024 * 1024; // 5MB
+                    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+                    if (!allowedTypes.includes(file.type)) {
+                        showAlert('Format de fichier non supporté. Utilisez JPG, PNG ou GIF.', 'danger');
+                        resetImageInput();
+                        return;
+                    }
+
+                    if (file.size > maxSize) {
+                        showAlert('Fichier trop volumineux. Taille max: 5MB.', 'danger');
+                        resetImageInput();
+                        return;
+                    }
+
+                    // Afficher la preview de la nouvelle image
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#preview').attr('src', e.target.result);
+                        $('#newImagePreview').removeClass('d-none');
+                        currentImage.addClass('opacity-50'); // Assombrir l'ancienne image
+
+                        // Mettre à jour le statut
+                        $('#lastModified').text('Modification en cours...');
+                    };
+                    reader.readAsDataURL(file);
+
+                    console.log("🔄 Nouvelle image sélectionnée:", file.name);
+                }
+            }
+
+            function cancelImageChange() {
+                resetImageInput();
+                $('#newImagePreview').addClass('d-none');
+                currentImage.removeClass('opacity-50');
+                $('#lastModified').text('@DateTime.Now.ToString("dd/MM/yyyy HH:mm")');
+            }
+
+            function resetImageInput() {
+                imageInput.value = '';
+                $('#imageInput').val('');
+            }
+
+            // Validation et soumission du formulaire
+            $('form').on('submit', function (e) {
+                console.log("=== FORMULAIRE DE MODIFICATION SOUMIS ===");
+
+                const formData = new FormData(this);
+                for (let [key, value] of formData.entries()) {
+                    if (value instanceof File) {
+                        console.log(`${key}:`, value.name, `(${(value.size / 1024).toFixed(2)} KB)`);
+                    } else {
+                        console.log(`${key}:`, value);
+                    }
+                }
+
+                // Afficher le statut de mise à jour
+                showAlert('Mise à jour du produit en cours...', 'info');
+
+                // Désactiver le bouton pour éviter les doubles clics
+                $('#submitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Mise à jour...');
+            });
+
+            // Réinitialisation du formulaire
+            window.showResetConfirmation = function () {
+                if (confirm('Êtes-vous sûr de vouloir réinitialiser le formulaire ? Toutes les modifications non sauvegardées seront perdues.')) {
+                    // Recharger la page pour réinitialiser complètement
+                    location.reload();
+                }
+            }
+
+            // Fonction d'alerte
+            function showAlert(message, type) {
+                const alertDiv = $('#validationSummary');
+                alertDiv.removeClass('d-none alert-danger alert-success alert-info')
+                       .addClass('alert-' + type)
+                       .html(`<i class="fas fa-${getIcon(type)} me-2"></i>${message}`);
+
+                if (type !== 'info') {
+                    setTimeout(() => alertDiv.addClass('d-none'), 5000);
+                }
+            }
+
+            function getIcon(type) {
+                switch (type) {
+                    case 'danger': return 'exclamation-triangle';
+                    case 'success': return 'check-circle';
+                    case 'info': return 'info-circle';
+                    case 'warning': return 'exclamation-circle';
+                    default: return 'info-circle';
+                }
+            }
+
+            // Mettre à jour la date de modification
+            $('input, select').on('change', function() {
+                $('#lastModified').text('@DateTime.Now.ToString("dd/MM/yyyy HH:mm") (Modifications non sauvegardées)');
+            });
+
+            // Initialisation
+            calculateStockValue();
+
+            // Pré-sélectionner la catégorie actuelle
+            const currentCategoryId = '@Model.CategoryId';
+            if (currentCategoryId) {
+                $('#CategoryId').val(currentCategoryId);
+            }
+        });
+    </script>
+}

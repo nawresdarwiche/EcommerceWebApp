@@ -1,0 +1,122 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Tp2</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap_cosmo.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Tp2.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">FlashBuy</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">
+                                Accueil
+                                <span class="visually-hidden">(current)</span>
+                            </a>
+                        </li>
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria
+                                   haspopup="true" aria-expanded="false">Administration</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="CreateRole">
+                                        Create
+                                        Role
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="ListRoles">
+                                        List
+                                        Roles
+                                    </a>
+                                </div>
+                            </li>
+                        }
+
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Liste d'articles</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-controller="Product" asp-action="Index">Tous les articles</a>
+                                <a class="dropdown-item" asp-controller="Product" asp-action="Create">Nouvel article</a>
+                            </div>
+                        </li>
+                    </ul>
+                   
+
+                    <!-- FORMULAIRE DE RECHERCHE CORRIGÉ -->
+                    <form class="d-flex" asp-controller="Product" asp-action="Search" method="get">
+                        <input class="form-control me-sm-2" type="search" placeholder="Rechercher produit ou catégorie..." name="val" value="@Context.Request.Query["val"]">
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">
+                            <i class="fas fa-search"></i> Chercher
+                        </button>
+                    </form>
+
+
+
+                </div>
+             <div class="collapse navbar-collapse" id="collapsibleNavbar">
+ <ul class="navbar-navml-auto">
+         @*If the user is signed-in display Logout link*@
+ @if(SignInManager.IsSignedIn(User))
+ {
+ <li class="nav-item">
+                <form method="post" asp-controller="account" asp-action="logout">
+                    <button type="submit" style="width:auto"
+                            class="nav-link btn btn-link py-0">
+ Logout@User.Identity.Name
+ </button>
+ </form>
+ </li>
+ }
+ else
+ {
+ <li class="nav-item">
+            <a class="nav-link" asp-controller="Account" asp-action="Register">
+ Register
+ </a>
+ </li>
+ <li class="nav-item">
+            <a class="nav-link" asp-controller="Account" asp-action="Login">
+ Login
+ </a>
+ </li>
+ }
+ </ul>
+ </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - Tp2 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/js/CustomScript.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Ajouter Font Awesome pour l'icône de recherche -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

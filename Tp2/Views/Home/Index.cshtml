@@ -1,0 +1,537 @@
+﻿@{
+    ViewData["Title"] = "Accueil - Votre Boutique en Ligne";
+}
+
+<!-- Bannière Hero - Plein écran -->
+<section class="hero-banner-full">
+    <div class="container-fluid">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Bienvenue sur <span class="text-primary">FlashBuy</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Découvrez notre collection exclusive de produits soigneusement sélectionnés.
+                        Des articles de qualité, des prix compétitifs et une livraison rapide.
+                    </p>
+                    <div class="hero-cta">
+                        <a href="#featured-products" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-shopping-bag me-2"></i>Découvrir nos produits
+                        </a>
+                        <a asp-controller="Product" asp-action="Create" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-store me-2"></i>Vendre un article
+                        </a>
+                    </div>
+                    <div class="hero-stats mt-4">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="stat-item">
+                                    <h4 class="stat-number">500+</h4>
+                                    <p class="stat-label">Produits</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-item">
+                                    <h4 class="stat-number">24h</h4>
+                                    <p class="stat-label">Livraison</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-item">
+                                    <h4 class="stat-number">⭐ 4.9/5</h4>
+                                    <p class="stat-label">Satisfaction</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-image">
+                    <img src="https://cdn.pixabay.com/photo/2016/11/23/15/32/pedestrians-1853552_1280.jpg"
+                         alt="Shopping en ligne" class="img-fluid rounded-3 shadow-lg">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section Catégories - Plein écran -->
+<section class="categories-section-full py-5 bg-light">
+    <div class="container-fluid px-5">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="section-title">Catégories Populaires</h2>
+                <p class="section-subtitle">Explorez nos différentes catégories de produits</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-xl-3 col-lg-6 col-md-6">
+                <div class="category-card text-center">
+                    <div class="category-icon mb-3">
+                        <i class="fas fa-laptop fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="category-name">Électronique</h5>
+                    <p class="category-count text-muted">150+ produits</p>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6">
+                <div class="category-card text-center">
+                    <div class="category-icon mb-3">
+                        <i class="fas fa-tshirt fa-3x text-success"></i>
+                    </div>
+                    <h5 class="category-name">Mode</h5>
+                    <p class="category-count text-muted">200+ produits</p>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6">
+                <div class="category-card text-center">
+                    <div class="category-icon mb-3">
+                        <i class="fas fa-home fa-3x text-warning"></i>
+                    </div>
+                    <h5 class="category-name">Maison</h5>
+                    <p class="category-count text-muted">120+ produits</p>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6">
+                <div class="category-card text-center">
+                    <div class="category-icon mb-3">
+                        <i class="fas fa-dumbbell fa-3x text-info"></i>
+                    </div>
+                    <h5 class="category-name">Sport</h5>
+                    <p class="category-count text-muted">80+ produits</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section Produits en Vedette - Plein écran -->
+<section id="featured-products" class="featured-section-full py-5">
+    <div class="container-fluid px-5">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="section-title">Produits en Vedette</h2>
+                <p class="section-subtitle">Découvrez nos produits les plus populaires</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <!-- Produit 1 -->
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://cdn.pixabay.com/photo/2016/11/29/08/41/apple-1868496_1280.jpg"
+                             alt="Smartphone" class="img-fluid">
+                        <div class="product-badge bg-success">En Stock</div>
+                    </div>
+                    <div class="product-info">
+                        <h5 class="product-name">Smartphone Haut de Gamme</h5>
+                        <p class="product-category text-muted">Électronique</p>
+                        <div class="product-price">
+                            <span class="current-price">€599</span>
+                            <span class="original-price">€699</span>
+                        </div>
+                        <div class="product-rating">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star-half-alt text-warning"></i>
+                            <span class="rating-count">(128)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Produit 2 -->
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://cdn.pixabay.com/photo/2016/03/27/22/16/fashion-1284496_1280.jpg"
+                             alt="Chaussures" class="img-fluid">
+                        <div class="product-badge bg-success">En Stock</div>
+                    </div>
+                    <div class="product-info">
+                        <h5 class="product-name">Chaussures Sport</h5>
+                        <p class="product-category text-muted">Mode</p>
+                        <div class="product-price">
+                            <span class="current-price">€89</span>
+                        </div>
+                        <div class="product-rating">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="far fa-star text-warning"></i>
+                            <span class="rating-count">(64)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Produit 3 -->
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://cdn.pixabay.com/photo/2017/08/02/01/16/tea-2568426_1280.jpg"
+                             alt="Théière" class="img-fluid">
+                        <div class="product-badge bg-warning">Stock limité</div>
+                    </div>
+                    <div class="product-info">
+                        <h5 class="product-name">Théière Céramique</h5>
+                        <p class="product-category text-muted">Maison</p>
+                        <div class="product-price">
+                            <span class="current-price">€45</span>
+                            <span class="original-price">€60</span>
+                        </div>
+                        <div class="product-rating">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <span class="rating-count">(42)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Produit 4 -->
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://cdn.pixabay.com/photo/2016/11/21/16/21/bed-1846251_1280.jpg"
+                             alt="Montre" class="img-fluid">
+                        <div class="product-badge bg-success">En Stock</div>
+                    </div>
+                    <div class="product-info">
+                        <h5 class="product-name">Montre Connectée</h5>
+                        <p class="product-category text-muted">Électronique</p>
+                        <div class="product-price">
+                            <span class="current-price">€199</span>
+                        </div>
+                        <div class="product-rating">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star-half-alt text-warning"></i>
+                            <span class="rating-count">(89)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                <a asp-controller="Product" asp-action="Index" class="btn btn-outline-primary btn-lg">
+                    Voir tous les produits <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section Avantages - Plein écran -->
+<section class="benefits-section-full py-5 bg-primary text-white">
+    <div class="container-fluid px-5">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title text-white">Pourquoi Choisir FlashBuy ?</h2>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-xl-4 col-md-4 text-center">
+                <div class="benefit-item">
+                    <i class="fas fa-shipping-fast fa-3x mb-3"></i>
+                    <h4>Livraison Rapide</h4>
+                    <p>Expédition sous 24h et livraison gratuite à partir de €50</p>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-4 text-center">
+                <div class="benefit-item">
+                    <i class="fas fa-shield-alt fa-3x mb-3"></i>
+                    <h4>Paiement Sécurisé</h4>
+                    <p>Transactions cryptées et protection des données</p>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-4 text-center">
+                <div class="benefit-item">
+                    <i class="fas fa-headset fa-3x mb-3"></i>
+                    <h4>Support 7j/7</h4>
+                    <p>Notre équipe est disponible pour vous aider</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Reset des marges pour le plein écran */
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    /* Hero Section - Plein écran */
+    .hero-banner-full {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0;
+        width: 100vw;
+        margin: 0;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+    }
+
+    .min-vh-100 {
+        min-height: 100vh;
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+        line-height: 1.6;
+    }
+
+    .hero-stats .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 1rem;
+        opacity: 0.8;
+        margin: 0;
+    }
+
+    /* Sections pleine largeur */
+    .categories-section-full,
+    .featured-section-full,
+    .benefits-section-full {
+        width: 100vw;
+        margin-left: -50vw;
+        left: 50%;
+        right: 50%;
+        position: relative;
+        margin-right: -50vw;
+    }
+
+    /* Sections */
+    .section-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+        font-size: 1.3rem;
+        color: #6c757d;
+        margin-bottom: 3rem;
+    }
+
+    /* Category Cards */
+    .category-card {
+        padding: 3rem 2rem;
+        border-radius: 20px;
+        background: white;
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+        margin: 0.5rem;
+    }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+    .category-name {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 1.3rem;
+    }
+
+    .category-count {
+        font-size: 1rem;
+    }
+
+    /* Product Cards */
+    .product-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+        margin: 0.5rem;
+    }
+
+        .product-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+    .product-image {
+        position: relative;
+        overflow: hidden;
+        height: 280px;
+    }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+    .product-card:hover .product-image img {
+        transform: scale(1.1);
+    }
+
+    .product-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .product-info {
+        padding: 2rem;
+    }
+
+    .product-name {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 1.3rem;
+    }
+
+    .product-price {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 1rem 0;
+    }
+
+    .current-price {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #28a745;
+    }
+
+    .original-price {
+        font-size: 1.2rem;
+        text-decoration: line-through;
+        color: #6c757d;
+    }
+
+    .product-rating {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .rating-count {
+        font-size: 1rem;
+        color: #6c757d;
+        margin-left: 0.5rem;
+    }
+
+    /* Benefits Section */
+    .benefit-item {
+        padding: 3rem 2rem;
+    }
+
+        .benefit-item h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .benefit-item p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+    .btn {
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+    }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+        }
+
+        .container-fluid.px-5 {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+        }
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Animation au scroll
+            $(window).scroll(function() {
+                $('.category-card, .product-card, .benefit-item').each(function() {
+                    var position = $(this).offset().top;
+                    var scrollPosition = $(window).scrollTop() + $(window).height();
+
+                    if (position < scrollPosition - 50) {
+                        $(this).addClass('animate__animated animate__fadeInUp');
+                    }
+                });
+            });
+
+            // Déclencher l'animation au chargement
+            setTimeout(function() {
+                $('.hero-content').addClass('animate__animated animate__fadeInLeft');
+                $('.hero-image').addClass('animate__animated animate__fadeInRight');
+            }, 300);
+
+            // Smooth scroll pour les ancres
+            $('a[href^="#"]').on('click', function(event) {
+                var target = $(this.getAttribute('href'));
+                if( target.length ) {
+                    event.preventDefault();
+                    $('html, body').stop().animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+}

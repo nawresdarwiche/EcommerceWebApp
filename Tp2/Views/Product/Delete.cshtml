@@ -1,0 +1,290 @@
+﻿@model Tp2.Models.Product
+@{
+    ViewData["Title"] = "Supprimer le Produit";
+    var photoPath = "~/images/" + (Model.Image ?? "noimage.jpg");
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-danger text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Confirmation de Suppression
+                        </h4>
+                        <a asp-action="Index" class="btn btn-light btn-sm">
+                            <i class="fas fa-arrow-left me-1"></i>Retour
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+                    <!-- Avertissement important -->
+                    <div class="alert alert-warning border-warning">
+                        <div class="d-flex">
+                            <i class="fas fa-exclamation-circle fa-2x me-3 text-warning"></i>
+                            <div>
+                                <h5 class="alert-heading">Attention ! Action irréversible</h5>
+                                <p class="mb-0">Vous êtes sur le point de supprimer définitivement ce produit. Cette action ne peut pas être annulée.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Informations du produit -->
+                        <div class="col-md-8">
+                            <div class="product-info-card p-4 border rounded">
+                                <h5 class="text-danger mb-4">
+                                    <i class="fas fa-box me-2"></i>Détails du Produit à Supprimer
+                                </h5>
+
+                                <div class="row">
+                                    <div class="col-sm-6 mb-3">
+                                        <label class="fw-bold text-muted">Nom du Produit</label>
+                                        <div class="fs-5 text-dark">@Model.Name</div>
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <label class="fw-bold text-muted">Prix</label>
+                                        <div class="fs-5 text-success">TND @Model.Price.ToString("N2")</div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6 mb-3">
+                                        <label class="fw-bold text-muted">Quantité en Stock</label>
+                                        <div class="fs-5">
+                                            <span class="badge @(Model.QteStock == 0 ? "bg-danger" : Model.QteStock < 10 ? "bg-warning" : "bg-success")">
+                                                @Model.QteStock unités
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <label class="fw-bold text-muted">Catégorie</label>
+                                        <div class="fs-5">
+                                            <span class="badge bg-primary">
+                                                <i class="fas fa-tag me-1"></i>@Model.Category?.CategoryName
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <label class="fw-bold text-muted">Valeur du Stock</label>
+                                        <div class="fs-5 text-info">
+                                            TND @((Model.Price * Model.QteStock).ToString("N2"))
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Statistiques d'impact -->
+                                <div class="mt-4 p-3 bg-light rounded">
+                                    <h6 class="text-muted mb-3">
+                                        <i class="fas fa-chart-bar me-2"></i>Impact de la suppression
+                                    </h6>
+                                    <div class="row text-center">
+                                        <div class="col-4">
+                                            <div class="text-danger">
+                                                <i class="fas fa-trash fa-2x mb-2"></i>
+                                                <div class="small">Produit supprimé</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="text-warning">
+                                                <i class="fas fa-money-bill-wave fa-2x mb-2"></i>
+                                                <div class="small">Valeur perdue</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="text-info">
+                                                <i class="fas fa-database fa-2x mb-2"></i>
+                                                <div class="small">Données effacées</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image et actions -->
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <!-- Image du produit -->
+                                <div class="mb-4">
+                                    <img src="@photoPath" asp-append-version="true"
+                                         class="img-fluid rounded shadow"
+                                         style="max-height: 200px;"
+                                         alt="@Model.Name" />
+                                    <div class="mt-2">
+                                        <small class="text-muted">Image du produit</small>
+                                    </div>
+                                </div>
+
+                                <!-- Zone d'actions -->
+                                <div class="action-section p-3 border rounded bg-light">
+                                    <h6 class="text-muted mb-3">Confirmer l'action</h6>
+
+                                    <form asp-action="Delete" id="deleteForm">
+                                        <input type="hidden" asp-for="ProductId" />
+
+                                        <div class="d-grid gap-2">
+                                            <button type="button" id="deleteBtn"
+                                                    class="btn btn-danger btn-lg">
+                                                <i class="fas fa-trash me-2"></i>Supprimer définitivement
+                                            </button>
+                                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                                <i class="fas fa-times me-2"></i>Annuler
+                                            </a>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Message de sécurité -->
+                                <div class="mt-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-shield-alt me-1"></i>
+                                        Action sécurisée - Requiert confirmation
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmation -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Confirmation finale
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-4">
+                    <i class="fas fa-skull-crossbones fa-4x text-danger mb-3"></i>
+                    <h4 class="text-danger">Êtes-vous absolument sûr ?</h4>
+                </div>
+
+                <div class="alert alert-danger">
+                    <strong>Cette action ne peut pas être annulée !</strong><br>
+                    Le produit <strong>"@Model.Name"</strong> sera définitivement supprimé de la base de données.
+                </div>
+
+                <div class="bg-light p-3 rounded">
+                    <strong>Détails de la suppression :</strong>
+                    <ul class="mb-0 mt-2">
+                        <li>Produit : @Model.Name</li>
+                        <li>Catégorie : @Model.Category?.CategoryName</li>
+                        <li>Valeur stock : TND @((Model.Price * Model.QteStock).ToString("N2"))</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Annuler
+                </button>
+                <button type="button" id="confirmDeleteBtn" class="btn btn-danger">
+                    <i class="fas fa-check me-2"></i>Oui, supprimer définitivement
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 15px;
+    }
+
+    .card-header {
+        border-radius: 15px 15px 0 0 !important;
+    }
+
+    .product-info-card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border: 1px solid #e9ecef;
+    }
+
+    .action-section {
+        border-radius: 10px;
+    }
+
+    .btn {
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        border: none;
+    }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+
+    .alert-warning {
+        border-radius: 10px;
+        border-left: 4px solid #ffc107;
+    }
+
+    .badge {
+        font-size: 0.8em;
+        padding: 0.5em 0.75em;
+    }
+
+    .modal-content {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .modal-header {
+        border-radius: 15px 15px 0 0;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Gestion de la suppression avec double confirmation
+            $('#deleteBtn').on('click', function() {
+                // Afficher la modal de confirmation
+                $('#confirmModal').modal('show');
+            });
+
+            // Confirmation finale
+            $('#confirmDeleteBtn').on('click', function() {
+                // Afficher l'indicateur de chargement
+                $(this).html('<i class="fas fa-spinner fa-spin me-2"></i>Suppression...');
+                $(this).prop('disabled', true);
+
+                // Soumettre le formulaire après un court délai pour l'effet visuel
+                setTimeout(function() {
+                    $('#deleteForm').submit();
+                }, 1000);
+            });
+
+            // Animation d'entrée
+            $('.card').hide().fadeIn(500);
+
+            // Effet de secousse sur le bouton supprimer au survol
+            $('#deleteBtn').on('mouseenter', function() {
+                $(this).addClass('animate__animated animate__headShake');
+            });
+
+            $('#deleteBtn').on('mouseleave', function() {
+                $(this).removeClass('animate__animated animate__headShake');
+            });
+        });
+    </script>
+}

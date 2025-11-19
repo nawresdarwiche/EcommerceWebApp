@@ -1,0 +1,178 @@
+﻿@model Tp2.Models.Product
+@{
+    ViewData["Title"] = "Détails du Produit";
+    var photoPath = "~/images/" + (Model.Image ?? "noimage.jpg");
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Index">Liste des Produits</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Détails</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Détails du Produit
+                    </h3>
+                </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Image Section -->
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="image-container">
+                                <img src="@photoPath" asp-append-version="true"
+                                     class="img-fluid rounded shadow product-image"
+                                     alt="@Model.Name"
+                                     onerror="this.src='/images/noimage.jpg'" />
+                            </div>
+                        </div>
+
+                        <!-- Product Details Section -->
+                        <div class="col-md-8">
+                            <div class="product-details">
+                                <h4 class="text-primary mb-4">@Model.Name</h4>
+
+                                <div class="details-grid">
+                                    <!-- Price -->
+                                    <div class="detail-item row align-items-center py-2 border-bottom">
+                                        <div class="col-sm-4">
+                                            <strong class="text-muted">
+                                                <i class="fas fa-tag me-2 text-success"></i>Prix en dinar :
+                                            </strong>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <span class="h5 text-success fw-bold">@Model.Price.ToString("N2") TND</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quantity -->
+                                    <div class="detail-item row align-items-center py-2 border-bottom">
+                                        <div class="col-sm-4">
+                                            <strong class="text-muted">
+                                                <i class="fas fa-boxes me-2 text-info"></i>Quantité en unité :
+                                            </strong>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <span class="h6 text-info fw-bold">@Model.QteStock</span>
+                                            @if (Model.QteStock < 10)
+                                            {
+                                                <span class="badge bg-warning ms-2">Stock faible</span>
+                                            }
+                                            else if (Model.QteStock == 0)
+                                            {
+                                                <span class="badge bg-danger ms-2">Rupture de stock</span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <!-- Category -->
+                                    <div class="detail-item row align-items-center py-2 border-bottom">
+                                        <div class="col-sm-4">
+                                            <strong class="text-muted">
+                                                <i class="fas fa-folder me-2 text-primary"></i>Catégorie :
+                                            </strong>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <span class="badge bg-primary fs-6">@Model.Category?.CategoryName</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Product ID -->
+                                    <div class="detail-item row align-items-center py-2 border-bottom">
+                                        <div class="col-sm-4">
+                                            <strong class="text-muted">
+                                                <i class="fas fa-barcode me-2 text-secondary"></i>Référence :
+                                            </strong>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <span class="text-muted">#@Model.ProductId</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="card-footer bg-light">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Retour à la liste
+                            </a>
+                        </div>
+                        <div class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-warning">
+                                <i class="fas fa-edit me-1"></i>Modifier
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model.ProductId" class="btn btn-danger">
+                                <i class="fas fa-trash me-1"></i>Supprimer
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .product-image {
+        max-height: 300px;
+        object-fit: cover;
+        border: 3px solid #e9ecef;
+        transition: transform 0.3s ease;
+    }
+
+    .product-image:hover {
+        transform: scale(1.05);
+    }
+
+    .image-container {
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    .detail-item {
+        transition: background-color 0.2s ease;
+    }
+
+    .detail-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .details-grid {
+        background: white;
+        border-radius: 8px;
+        padding: 0;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+    }
+
+    .card-header {
+        border-radius: 15px 15px 0 0 !important;
+    }
+
+    .breadcrumb {
+        background: transparent;
+        padding: 0;
+    }
+</style>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

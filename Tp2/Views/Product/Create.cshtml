@@ -1,0 +1,332 @@
+﻿@model Tp2.ViewModels.CreateViewModel
+@{
+    ViewData["Title"] = "Nouveau Produit";
+}
+
+<!-- Styles intégrés directement -->
+<style>
+    .file-upload-area {
+        border: 2px dashed #dee2e6;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+    }
+
+        .file-upload-area:hover {
+            border-color: #007bff;
+            background: #e3f2fd;
+        }
+
+        .file-upload-area.dragover {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+    .card {
+        border-radius: 15px;
+    }
+
+    .card-header {
+        border-radius: 15px 15px 0 0 !important;
+    }
+
+    .form-control, .form-select {
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            border-color: #007bff;
+        }
+
+    .btn {
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    #stockValue {
+        font-weight: bold;
+        color: #28a745;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-plus-circle me-2"></i>Ajouter un Nouveau Produit
+                        </h4>
+                        <a asp-action="Index" class="btn btn-light btn-sm">
+                            <i class="fas fa-arrow-left me-1"></i>Retour
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+                    <form enctype="multipart/form-data" asp-action="Create" id="productForm" class="needs-validation" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none" id="validationSummary"></div>
+
+                        <!-- Section Informations de Base -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-info-circle me-2"></i>Informations de Base
+                                </h5>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label fw-bold">
+                                    <i class="fas fa-tag me-1"></i>Nom du Produit
+                                </label>
+                                <input asp-for="Name" class="form-control form-control-lg"
+                                       placeholder="Ex: iPhone 15 Pro Max"
+                                       required />
+                                <div class="form-text">Le nom doit être unique et descriptif</div>
+                                <span asp-validation-for="Name" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CategoryId" class="form-label fw-bold">
+                                    <i class="fas fa-folder me-1"></i>Catégorie
+                                </label>
+                                <select asp-for="CategoryId" class="form-select form-select-lg" required>
+                                    <option value="">Sélectionnez une catégorie</option>
+                                    @if (ViewBag.CategoryId != null)
+                                    {
+                                        foreach (var item in ViewBag.CategoryId)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <!-- Section Prix et Stock -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-chart-line me-2"></i>Prix et Stock
+                                </h5>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Price" class="form-label fw-bold">
+                                    <i class="fas fa-money-bill me-1"></i>Prix (TND)
+                                </label>
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text bg-light">TND</span>
+                                    <input asp-for="Price" class="form-control"
+                                           type="number"
+                                           step="0.01"
+                                           min="0.01"
+                                           max="100000"
+                                           placeholder="0.00"
+                                           required />
+                                </div>
+                                <div class="form-text">Prix de vente TTC</div>
+                                <span asp-validation-for="Price" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="QteStock" class="form-label fw-bold">
+                                    <i class="fas fa-boxes me-1"></i>Quantité en Stock
+                                </label>
+                                <input asp-for="QteStock" class="form-control form-control-lg"
+                                       type="number"
+                                       min="0"
+                                       max="100000"
+                                       placeholder="0"
+                                       required />
+                                <div class="form-text">Stock disponible</div>
+                                <span asp-validation-for="QteStock" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-calculator me-1"></i>Valeur du Stock
+                                </label>
+                                <div class="form-control form-control-lg bg-light" id="stockValue">
+                                    TND 0.00
+                                </div>
+                                <div class="form-text">Prix × Quantité</div>
+                            </div>
+                        </div>
+
+                        <!-- Section Image -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-image me-2"></i>Image du Produit
+                                </h5>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="file-upload-area border rounded p-4 text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-cloud-upload-alt fa-3x text-muted"></i>
+                                    </div>
+
+                                    <label asp-for="ImagePath" class="form-label fw-bold d-block">
+                                        Glissez-déposez votre image ici ou cliquez pour parcourir
+                                    </label>
+
+                                    <div class="custom-file">
+                                        <input asp-for="ImagePath" type="file"
+                                               class="form-control custom-file-input d-none"
+                                               accept="image/*"
+                                               id="imageInput" />
+                                        <button type="button" class="btn btn-outline-primary btn-lg mt-2" onclick="document.getElementById('imageInput').click()">
+                                            <i class="fas fa-folder-open me-2"></i>Choisir une Image
+                                        </button>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <span class="text-muted small">
+                                            Formats acceptés: JPG, PNG, GIF • Taille max: 5MB
+                                        </span>
+                                    </div>
+
+                                    <div id="imagePreview" class="mt-3 d-none">
+                                        <img id="preview" class="img-thumbnail" style="max-height: 200px;" />
+                                        <div class="mt-2">
+                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeImage()">
+                                                <i class="fas fa-trash me-1"></i>Supprimer
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <span asp-validation-for="ImagePath" class="text-danger small d-block mt-2"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section Actions -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <button type="button" class="btn btn-outline-secondary" onclick="resetForm()">
+                                            <i class="fas fa-undo me-1"></i>Réinitialiser
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-success btn-lg px-4" id="submitBtn">
+                                            <i class="fas fa-save me-2"></i>Créer le Produit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            function calculateStockValue() {
+                const price = parseFloat($('#Price').val()) || 0;
+                const quantity = parseInt($('#QteStock').val()) || 0;
+                const stockValue = price * quantity;
+                $('#stockValue').text('TND ' + stockValue.toFixed(2));
+
+                if (stockValue > 10000) {
+                    $('#stockValue').removeClass('bg-light').addClass('bg-warning text-dark');
+                } else if (stockValue > 0) {
+                    $('#stockValue').removeClass('bg-light bg-warning').addClass('bg-success text-white');
+                } else {
+                    $('#stockValue').removeClass('bg-warning bg-success text-white').addClass('bg-light');
+                }
+            }
+
+            $('#Price, #QteStock').on('input', calculateStockValue);
+
+            // Gestion de l'upload d'image
+            const fileUploadArea = $('.file-upload-area');
+            const imageInput = $('#imageInput')[0];
+
+            fileUploadArea.on('dragover', function (e) {
+                e.preventDefault();
+                $(this).addClass('dragover');
+            });
+
+            fileUploadArea.on('dragleave', function () {
+                $(this).removeClass('dragover');
+            });
+
+            fileUploadArea.on('drop', function (e) {
+                e.preventDefault();
+                $(this).removeClass('dragover');
+                if (e.originalEvent.dataTransfer.files.length) {
+                    imageInput.files = e.originalEvent.dataTransfer.files;
+                    handleImageSelection();
+                }
+            });
+
+            $('#imageInput').on('change', handleImageSelection);
+
+            function handleImageSelection() {
+                const file = imageInput.files[0];
+                if (file) {
+                    const maxSize = 5 * 1024 * 1024;
+                    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+                    if (!allowedTypes.includes(file.type)) {
+                        alert('Format de fichier non supporté. Utilisez JPG, PNG ou GIF.');
+                        resetImageInput();
+                        return;
+                    }
+
+                    if (file.size > maxSize) {
+                        alert('Fichier trop volumineux. Taille max: 5MB.');
+                        resetImageInput();
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#preview').attr('src', e.target.result);
+                        $('#imagePreview').removeClass('d-none');
+                        $('.file-upload-area .fa-cloud-upload-alt').addClass('d-none');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            window.removeImage = function () {
+                resetImageInput();
+                $('#imagePreview').addClass('d-none');
+                $('.file-upload-area .fa-cloud-upload-alt').removeClass('d-none');
+            }
+
+            function resetImageInput() {
+                imageInput.value = '';
+            }
+
+            $('form').on('submit', function (e) {
+                console.log("=== FORMULAIRE SOUMIS ===");
+                $('#submitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Création...');
+            });
+
+            window.resetForm = function () {
+                if (confirm('Êtes-vous sûr de vouloir réinitialiser le formulaire ?')) {
+                    document.getElementById('productForm').reset();
+                    removeImage();
+                    calculateStockValue();
+                    $('.alert').addClass('d-none');
+                    $('#submitBtn').prop('disabled', false).html('<i class="fas fa-save me-2"></i>Créer le Produit');
+                }
+            }
+
+            calculateStockValue();
+        });
+    </script>
+}
